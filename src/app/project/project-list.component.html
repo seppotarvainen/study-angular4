@@ -1,0 +1,13 @@
+<h3><small><strong>PROJECTS</strong></small></h3>
+
+<div>
+  <div *ngFor="let project of projects">
+    <button class="list-group-item" [ngClass]="{'list-group-item-info': project == selectedProject}" (click)="onSelect(project)">
+      <span>{{project.title}}</span>
+      <span *ngIf="project.done" class="glyphicon glyphicon-ok"></span>
+    </button>
+  </div>
+</div>
+
+<br>
+
