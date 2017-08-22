@@ -1,0 +1,83 @@
+<div>
+  <h1>Register</h1>
+
+  <form class="form-horizontal" [formGroup]="registerForm" (ngSubmit)="submit()" novalidate>
+
+    <form-input [label]="'Username: '" [inputId]="'username'" [field]="username" [fieldName]="'username'"
+                [group]="registerForm"
+                [errorMessages]="{minlength: 'Username should be at least 6 characters.', required: 'Username is required.'}"></form-input>
+
+    <form-input [label]="'Email: '" [inputId]="'email'" [field]="email" [fieldName]="'email'"
+                [group]="registerForm"
+                [errorMessages]="{regexValidator: 'Provide a valid email address.', required: 'Email is required.'}"></form-input>
+
+    <form-input [label]="'Password: '" [inputId]="'password'" [field]="password" [fieldName]="'password'"
+                [group]="registerForm" [type]="'password'"
+                [errorMessages]="{minlength: 'Password should be at least 8 characters'}"></form-input>
+
+    <form-input [label]="'Confirm password: '" [inputId]="'mpassword'" [field]="mpassword" [fieldName]="'mpassword'"
+                [group]="registerForm" [type]="'password'"
+                [errorMessages]="{minlength: 'Password should be at least 8 characters', mpassword: 'Passwords don\'t match'}"></form-input>
+
+    <input class="col-sm-offset-2 btn btn-default" [ngClass]="{disabled: registerForm.invalid}" type="submit" value="Register" />
+
+    <!--<div [ngClass]="{'form-group': true, 'has-error': validate(username)}">-->
+      <!--<label class="col-sm-2 control-label" for="username">Username: </label>-->
+      <!--<div class="col-sm-8">-->
+        <!--<input id="username" class="form-control"  [formGroup]="registerForm">-->
+      <!--</div>-->
+      <!--<div *ngIf="validate(username)" class="col-sm-2 help-block validators">-->
+        <!--<p *ngIf="username.errors.required">-->
+          <!--Username is required-->
+        <!--</p>-->
+        <!--<p *ngIf="username.errors.minlength">-->
+          <!--Username should be at least 6 characters.-->
+        <!--</p>-->
+      <!--</div>-->
+    <!--</div>-->
+
+    <!--<div [ngClass]="{'form-group': true, 'has-error': validate(email)}">-->
+      <!--<label class="col-sm-2 control-label" for="email">Email: </label>-->
+      <!--<div class="col-sm-8">-->
+        <!--<input id="email" class="form-control" formControlName="email" placeholder="john.doe@example.com"/>-->
+      <!--</div>-->
+      <!--<div *ngIf="validate(email)" class="col-sm-2 help-block validators">-->
+        <!--<div *ngIf="email.errors.required">-->
+          <!--Email is required.-->
+        <!--</div>-->
+        <!--<div *ngIf="email.errors.regexValidator">-->
+          <!--Like this: me.email@example.com-->
+        <!--</div>-->
+      <!--</div>-->
+    <!--</div>-->
+
+    <!--<div [ngClass]="{'form-group': true, 'has-error': validate(password)}">-->
+      <!--<label class="col-sm-2 control-label" for="password">Password: </label>-->
+      <!--<div class="col-sm-8">-->
+        <!--<input id="password" type="password" class="form-control" formControlName="password"/>-->
+      <!--</div>-->
+      <!--<div *ngIf="validate(password)" class="col-sm-2 help-block validators">-->
+        <!--<div *ngIf="password.errors.minlength">-->
+          <!--Password must be at least 8 characters-->
+        <!--</div>-->
+      <!--</div>-->
+    <!--</div>-->
+
+    <!--<div [ngClass]="{'form-group': true, 'has-error': validate(mpassword)}">-->
+      <!--<label class="col-sm-2 control-label" for="email">Password again: </label>-->
+      <!--<div class="col-sm-8">-->
+        <!--<input id="mpassword" type="password" class="form-control" formControlName="mpassword"/>-->
+      <!--</div>-->
+      <!--<div *ngIf="validate(mpassword)" class="col-sm-2 help-block validators">-->
+        <!--<div *ngIf="mpassword.errors.minlength">-->
+          <!--Password must be at least 8 characters-->
+        <!--</div>-->
+        <!--<div *ngIf="mpassword.errors.mpassword">-->
+          <!--Passwords don't match-->
+        <!--</div>-->
+      <!--</div>-->
+    <!--</div>-->
+  </form>
+  <hr>
+  <p>Already registered? Try <a routerLink="/login" routerLinkActive="active">login</a>.</p>
+</div>

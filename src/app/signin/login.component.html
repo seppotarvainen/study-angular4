@@ -1,0 +1,15 @@
+<div>
+  <h1>Login</h1>
+    <form class="form-horizontal" [formGroup]="loginForm" (ngSubmit)="submit()" novalidate>
+      <form-input [label]="'Username: '" [inputId]="'username'" [field]="username" [fieldName]="'username'"
+                  [group]="loginForm"
+                  [errorMessages]="{minlength: 'Username should be at least 6 characters.', required: 'Username is required.'}"></form-input>
+      <form-input [label]="'Password: '" [inputId]="'password'" [field]="password" [fieldName]="'password'"
+                  [group]="loginForm" [type]="'password'"
+                  [errorMessages]="{minlength: 'Password should be at least 8 characters'}"></form-input>
+
+      <input class="col-sm-offset-2 btn btn-default" [ngClass]="{disabled: loginForm.invalid}" type="submit" value="Login" />
+    </form>
+  <hr>
+  <p>Missing account? Try <a routerLink="/registration" routerLinkActive="active">registration</a>.</p>
+</div>

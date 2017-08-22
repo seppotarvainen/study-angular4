@@ -1,0 +1,6 @@
+.validators > p {
+  display: none;
+}
+.validators > p:first-child {
+  display: block;
+}

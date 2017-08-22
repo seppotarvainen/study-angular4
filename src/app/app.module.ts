@@ -1,7 +1,7 @@
-import { BrowserModule } from '@angular/platform-browser';
-import { NgModule } from '@angular/core';
+import {BrowserModule} from "@angular/platform-browser";
+import {NgModule} from "@angular/core";
 
-import { AppComponent } from './app.component';
+import {AppComponent} from "./app.component";
 import {ProjectListComponent} from "./project/project-list.component";
 import {ProjectService} from "./project/project.service";
 import {ProjectDetailsComponent} from "./project/project-details.component";
@@ -12,6 +12,8 @@ import {TimerComponent} from "./timer/timer.component";
 import {FormsModule} from "@angular/forms";
 import {MaxLenghtValidatorDirective} from "./max-length-validator.directive";
 import {DurationPipe} from "./timer/duration.pipe";
+import {AppRoutingModule} from "./app-routing.module";
+import {SigninModule} from "./signin/signin.module";
 
 @NgModule({
   declarations: [
@@ -27,7 +29,9 @@ import {DurationPipe} from "./timer/duration.pipe";
   imports: [
     BrowserModule,
     HttpModule,
-    FormsModule
+    FormsModule,
+    AppRoutingModule,
+    SigninModule
   ],
   providers: [ProjectService],
   bootstrap: [AppComponent]
