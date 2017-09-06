@@ -30,3 +30,7 @@ h1 > sup {
   font-size: 1.25rem;
   top: -1em;
 }
+
+.add-top-margin {
+  margin-top: 0.5em;
+}

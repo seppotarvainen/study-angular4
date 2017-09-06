@@ -1,5 +1,5 @@
 
-import {Component, EventEmitter, Input, Output} from "@angular/core";
+import {AfterContentInit, Component, EventEmitter, Input, OnInit, Output} from "@angular/core";
 import ChecklistItem from "./checklist-item";
 import Project from "../project/project";
 import {ProjectService} from "../project/project.service";
@@ -10,27 +10,27 @@ import {ProjectService} from "../project/project.service";
   selector: "checklist"
 })
 export class ChecklistComponent {
-  @Input() project: Project;
-  @Output() onUpdateProject = new EventEmitter<Project>();
+
+  @Input() checklist: ChecklistItem[];
+  @Input() projectId: number;
+  @Output() onAddChecklistItem = new EventEmitter<ChecklistItem>();
   isEditMode: boolean = false;
   item: string;
-
-  checklistForm;
 
   constructor(private projectService: ProjectService) {}
 
   getDoneItems(items: ChecklistItem[]): number{
-    return items.filter(item => item.done).length;
+    if (items) return items.filter(item => item.done).length;
   }
 
   addChecklistItem(item: ChecklistItem): void{
-    this.projectService.addChecklistItem(this.project.id, item).then(
-      response => {
-        this.project.checklist.push(response);
-        this.onUpdateProject.emit(this.project);
+    this.onAddChecklistItem.emit(item);
+
+    this.projectService.addChecklistItem(this.projectId, item).then(response => {
+        this.checklist.push(response);
         this.item = null;
       }
-    )
+    );
   }
 
   clickCreateTask(): void {
@@ -38,29 +38,31 @@ export class ChecklistComponent {
   }
 
   clickAddNewTask(): void {
+    this.projectService.setLocked(true);
     this.isEditMode = true;
   }
 
   clickCancel(): void {
+    this.projectService.setLocked(false);
     this.isEditMode = false;
   }
 
   setChecklistItemDone(item: ChecklistItem, value: boolean): void {
     item.done = value;
-    this.projectService.editChecklistItem(this.project.id, item).then(
+    this.projectService.editChecklistItem(this.projectId, item).then(
       response => {
-        let index = this.project.checklist.findIndex(i => i.id === item.id);
-        this.project.checklist[index] = item;
-        this.onUpdateProject.emit(this.project);
+        let index = this.checklist.findIndex(i => i.id === item.id);
+        this.checklist[index] = response;
       }
     );
   }
 
   clickRemoveDoneTasks() {
-    this.projectService.deleteCompletedItems(this.project.id).then(
+    this.projectService.deleteCompletedItems(this.projectId).then(
       response => {
-        this.project.checklist = this.project.checklist.filter(p => !p.done);
-        this.onUpdateProject.emit(this.project);
+        if (response === null) {
+          this.checklist = this.checklist.filter(item => !item.done);
+        }
       }
     )
   }

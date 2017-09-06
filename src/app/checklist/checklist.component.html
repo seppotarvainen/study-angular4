@@ -1,30 +1,33 @@
 <h2>Checklist:</h2>
-<div *ngIf="project">
-  <div *ngFor="let item of project.checklist">
+<div *ngIf="checklist">
+  <div *ngFor="let item of checklist">
     <ul class="checklist">
       <li>
-        <input type="checkbox" id="item-{{item.id}}" (click)="setChecklistItemDone(item, $event.target.checked)" [checked]="item.done"><label for="item-{{item.id}}">
-          <div [ngSwitch]="item.done">
-            <s *ngSwitchCase="true">{{item.content}}</s>
-            <span *ngSwitchDefault>{{item.content}}</span>
-          </div>
-        </label>
+        <input type="checkbox" id="item-{{item.id}}" (click)="setChecklistItemDone(item, $event.target.checked)"
+               [checked]="item.done"><label for="item-{{item.id}}">
+        <div [ngSwitch]="item.done">
+          <s *ngSwitchCase="true">{{item.content}}</s>
+          <span *ngSwitchDefault>{{item.content}}</span>
+        </div>
+      </label>
       </li>
     </ul>
   </div>
-</div>
 
-<!-- form & buttons, completed info -->
 
-<div *ngIf="!isEditMode; else checklistForm">
-  <p>{{getDoneItems(project.checklist)}} of {{project.checklist.length}} done</p>
+  <!-- form & buttons, completed info -->
 
-  <button type="button" class="btn btn-default" (click)="clickAddNewTask()">
-    <span class="glyphicon glyphicon-plus" aria-hidden="true"></span> Add task
-  </button>
-  <button type="button" class="btn btn-danger" (click)="clickRemoveDoneTasks()">
-    <span class="glyphicon glyphicon-trash" aria-hidden="true"></span> Remove done tasks
-  </button>
+  <div *ngIf="!isEditMode; else checklistForm">
+    <!--{{project.checklist.length}}-->
+    <p>{{getDoneItems(checklist)}} of {{checklist.length}}  done</p>
+
+    <button type="button" class="btn btn-default" (click)="clickAddNewTask()">
+      <span class="glyphicon glyphicon-plus" aria-hidden="true"></span> Add task
+    </button>
+    <button type="button" class="btn btn-danger" (click)="clickRemoveDoneTasks()">
+      <span class="glyphicon glyphicon-trash" aria-hidden="true"></span> Remove done tasks
+    </button>
+  </div>
 </div>
 
 <!-- template for checklist form -->
@@ -33,7 +36,7 @@
     <div class="form-group">
       <label for="item" class="col-sm-1">Item</label>
       <div class="col-sm-11">
-        <input type="text" id="item" name="item"  class="form-control" required [(ngModel)]="item">
+        <input type="text" id="item" name="item" class="form-control" required [(ngModel)]="item">
       </div>
     </div>
     <div class="col-sm-offset-1">

@@ -1,3 +1,4 @@
+<div class="block">
 <div class="pull-left add-margin">
   <button type="button" class="btn btn-default btn-lg" [ngClass]="{'btn-info': !running}" (click)="toggleTimer()">
     <span class="glyphicon" [ngClass]="{'glyphicon-play': !running, 'glyphicon-pause': running}" aria-hidden="true"></span>
@@ -5,7 +6,9 @@
 </div>
 <div class="pull-left">
   <p>
-    Current recording: {{getTime(currentTime)}} <br>
-    Total time: {{getTime(time + currentTime)}}
+    {{getTime(totalTime + currentTime)}} <br>
+
+    <span *ngIf="totalTime > 0" class="small"><i>Last recording: {{getLatestRecording() | date:'d.M.yyyy, HH:mm'}}</i></span>
   </p>
+</div>
 </div>

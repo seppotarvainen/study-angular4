@@ -1,0 +1,20 @@
+<div>
+  <form class="form-horizontal" [formGroup]="subProjectForm" (ngSubmit)="submit()">
+    <form-input [label]="'Title: '" [inputId]="'title'" [field]="title"
+                [group]="subProjectForm"
+                [errorMessages]="getErrorMessage('title')"></form-input>
+
+    <form-input [label]="'Comment: '" [inputId]="'comment'" [field]="comment"
+                [group]="subProjectForm" [type]="'textarea'"
+                [errorMessages]="getErrorMessage('comment')"></form-input>
+    <div class="help-block pull-right">{{comment.value.length}} / 128</div>
+
+    <div class="form-group">
+      <div class="col-sm-offset-2 col-sm-10">
+        <button type="submit" class="btn btn-default" [ngClass]="{disabled: subProjectForm.invalid}">Submit</button>
+        <button type="button" class="btn btn-danger" (click)="cancel()">Cancel</button>
+      </div>
+    </div>
+
+  </form>
+</div>

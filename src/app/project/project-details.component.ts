@@ -2,112 +2,79 @@
  * Created by Seppo on 19/07/2017.
  */
 
-import {Component, EventEmitter, Input, OnChanges, Output} from "@angular/core";
+import {Component, EventEmitter, Input, OnChanges, OnInit, Output} from "@angular/core";
 import Project from "./project";
 import {ProjectService} from "./project.service";
 import ChecklistItem from "../checklist/checklist-item";
+import {ActivatedRoute, Router, ParamMap} from "@angular/router";
+import "rxjs/add/operator/switchMap";
 
 @Component({
   templateUrl: "./project-details.component.html",
   selector: "project-details"
 })
-export class ProjectDetailsComponent implements OnChanges{
-  @Input() project: Project;
-  @Input() isEditMode: boolean;
+export class ProjectDetailsComponent implements OnInit{
+  // @Input() project: Project;
   @Output() onEditProject: EventEmitter<Project> = new EventEmitter<Project>();
-  @Output() onAddProject: EventEmitter<Project> = new EventEmitter<Project>();
-  @Output() onDelete: EventEmitter<Project> = new EventEmitter<Project>();
-  @Output() onChangeEditStatus: EventEmitter<boolean> = new EventEmitter<boolean>();
-  @Output() onLockProject: EventEmitter<boolean> = new EventEmitter<boolean>();
-  projectCopy: Project;
+  project: Project;
 
-  name: string = '';
   isProjectLocked: boolean = false;
 
-  constructor(private projectService: ProjectService) {}
+  constructor(private projectService: ProjectService, private route: ActivatedRoute, private router: Router) {}
 
-  public onClickEdit(): void {
-    if (this.isProjectLocked) return;
 
-    this.setProjectCopyToOriginal();
-    this.onChangeEditStatus.emit(true);
-  }
-
-  ngOnChanges(): void {
-    this.setProjectCopyToOriginal();
-  }
-
-  onClickCancel(): void {
-    this.onChangeEditStatus.emit(false);
-  }
-
-  onClickSubmit(): void {
-    if (this.projectCopy.id) {
-      this.projectService.updateProject(this.projectCopy).then(response => {
-        this.onEditProject.emit(response);
-      });
-    } else {
-      this.projectService.addProject(this.projectCopy).then(response => {
-        this.onAddProject.emit(response);
-        }
-      )
-    }
-  }
-
-  lockProject(value: boolean): void {
-    this.isProjectLocked = value;
-    this.onLockProject.emit(value);
-  }
-
-  onClickDelete(): void {
-    if (this.isProjectLocked) return;
-
-    this.projectService.deleteProject(this.project).then(() => {
-      this.onDelete.emit(this.project);
+  ngOnInit(): void {
+    this.route.params.subscribe(params => {
+      if (params.hasOwnProperty('id')){
+        this.projectService.getProject(+params['id']).then(
+          p => {
+            this.project = p;
+            console.log(p);
+          }
+        )
+      } else {
+        this.project = null;
+      }
     })
   }
 
-  onAddChecklistItem(updatedProject: Project): void {
-    this.onEditProject.emit(updatedProject);
+  // lockProject(value: boolean): void {
+  //   this.projectService.setLocked(value);
+  // }
+
+  public onClickEdit(): void {
+    if (this.projectService.getLocked()) return;
+    this.projectService.setLocked(true);
+
+    this.router.navigate(['edit'], {relativeTo: this.route});
   }
 
-  showProjectHeading(): string {
-    if (this.projectCopy && this.projectCopy.title.length > 0) {
-      return this.projectCopy.title;
-    }
-    return "Project title";
+  onClickDelete(): void {
+    if (this.projectService.getLocked()) return;
+
+    this.projectService.deleteProject(this.project).then(() => {
+      this.router.navigate(['projects']);
+    })
   }
 
   onClickMarkAsDone(event: boolean): void {
-    this.projectCopy.done = event;
-    this.projectService.updateProject(this.projectCopy).then(response => {
-      this.onEditProject.emit(response);
+    let copy = this.getProjectCopy();
+    copy.done = event;
+    this.projectService.updateProject(copy).then(response => {
+      this.project.done = response.done;
     });
-
-  }
-
-  isTitleValid(title: any): boolean {
-    return title.errors && (title.dirty || title.touched);
-  }
-
-  isDescriptionValid(description: any): boolean {
-    return description.errors && (description.dirty || description.touched);
   }
 
   updateTime(newTime: number): void {
-    let copy = Object.assign(this.project) as Project;
-    copy.timeInSeconds = newTime;
-
-    this.projectService.updateProject(copy).then(response => {
-      this.project.timeInSeconds = response.timeInSeconds;
-    });
+    let copy = this.getProjectCopy();
+    // copy.timeInSeconds = newTime;
+    //
+    // this.projectService.updateProject(copy).then(response => {
+    //   this.project.timeInSeconds = response.timeInSeconds;
+    // });
   }
 
-  private setProjectCopyToOriginal(): void {
-    if (this.project) {
-      this.projectCopy = Object.assign(this.project) as Project;
-    } else {
-      this.projectCopy = new Project();
-    }
+  private getProjectCopy(): Project {
+    return Object.assign(this.project);
   }
 }

@@ -1,0 +1,20 @@
+<div [formGroup]="group" [ngClass]="{'form-group': true, 'has-error': validateField()}" >
+  <label class="col-sm-2 control-label" for="{{inputId}}">{{label}}</label>
+  <div class="col-sm-10">
+
+    <div *ngIf="type !== 'textarea'; else textarea">
+      <input [myAutofocus]="isFocused" id="{{inputId}}" formControlName="{{inputId}}" class="form-control" type="{{type}}">
+    </div>
+
+    <ng-template #textarea>
+      <textarea id="{{inputId}}" formControlName="{{inputId}}" class="form-control" ></textarea>
+    </ng-template>
+
+  <div *ngIf="validateField()" class="help-block validators">
+    <p *ngFor="let error of getErrors(field.errors)">
+      {{errorMessages[error]}}
+    </p>
+  </div>
+  </div>
+</div>
+

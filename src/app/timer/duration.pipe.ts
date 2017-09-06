@@ -12,12 +12,17 @@ export class DurationPipe implements PipeTransform {
    * @param value - number of seconds
    * @returns {string} - duraton in format hh:mm:ss
    */
-  transform(value: number): string {
+  transform(value: number | string): string {
 
-    let h = Math.floor(value / 3600);
-    let m = Math.floor((value / 60) % 60);
-    let s = value % 60;
+    let output = value.toString();
 
-    return h+"h "+m+"min "+s+ "s";
+    if (typeof value === "number"){
+      let h = Math.floor(value / 3600);
+      let m = Math.floor((value / 60) % 60);
+      let s = value % 60;
+      output = h+"h "+m+"min "+s+ "s";
+    }
+
+    return output;
   }
 }

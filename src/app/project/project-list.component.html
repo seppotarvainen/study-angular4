@@ -1,11 +1,28 @@
-<h3><small><strong>PROJECTS</strong></small></h3>
+<h3>
+  <small><strong>PROJECTS</strong></small>
+</h3>
+
+
+<div class="form-group">
+  <input #searchBox type="text" placeholder="Find projects..." class="form-control"
+         (keyup)="onChangeSearchText(searchBox.value)">
+
+  <button myLock class="btn btn-default btn-block add-top-margin" (click)="onClickAddProject()">
+    <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
+    <span>Add project</span>
+  </button>
+</div>
 
 <div>
-  <div *ngFor="let project of projects">
-    <button class="list-group-item" [ngClass]="{'list-group-item-info': project == selectedProject}" (click)="onSelect(project)">
+  <div *ngFor="let project of getFilteredProjects()">
+    <button class="list-group-item" [ngClass]="{'list-group-item-info': isSelectedProjectId(project.id)}" (click)="onSelect(project)" myLock >
       <span>{{project.title}}</span>
       <span *ngIf="project.done" class="glyphicon glyphicon-ok"></span>
     </button>
+  </div>
+
+  <div *ngIf="searchBox.value.length > 0 &&  filteredProjects.length === 0">
+    <p><i>No projects found</i></p>
   </div>
 </div>
 
