@@ -1,10 +1,10 @@
 <div>
   <h1>Login</h1>
     <form class="form-horizontal" [formGroup]="loginForm" (ngSubmit)="submit()" novalidate>
-      <form-input [label]="'Username: '" [inputId]="'username'" [field]="username" [fieldName]="'username'"
+      <form-input [label]="'Username: '" [inputId]="'username'" [field]="username"
                   [group]="loginForm"
                   [errorMessages]="{minlength: 'Username should be at least 6 characters.', required: 'Username is required.'}"></form-input>
-      <form-input [label]="'Password: '" [inputId]="'password'" [field]="password" [fieldName]="'password'"
+      <form-input [label]="'Password: '" [inputId]="'password'" [field]="password"
                   [group]="loginForm" [type]="'password'"
                   [errorMessages]="{minlength: 'Password should be at least 8 characters'}"></form-input>
 
@@ -12,4 +12,5 @@
     </form>
   <hr>
   <p>Missing account? Try <a routerLink="/registration" routerLinkActive="active">registration</a>.</p>
+  <p>Continue to <a routerLink="/home" routerLinkActive="active">projects</a></p>
 </div>

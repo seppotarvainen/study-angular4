@@ -1,6 +1,9 @@
 import {Component, Inject} from "@angular/core";
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
-import {PasswordValidation, regexValidator} from "./validators";
+import {PasswordValidation, regexValidator} from "../form/validators";
+import {SignInService} from "./signin.service";
+import {UserRegistration} from "../utils/request-objects";
+import {Router} from "@angular/router";
 /**
  * Created by Seppo on 21/08/2017.
  */
@@ -17,25 +20,42 @@ import {PasswordValidation, regexValidator} from "./validators";
 export class RegistrationComponent {
 
   registerForm: FormGroup;
+  errorMessages: {username: object, email: object, password: object, mpassword: object};
+  user: UserRegistration;
 
-  constructor(@Inject(FormBuilder) fb: FormBuilder) {
-
+  constructor(@Inject(FormBuilder) fb: FormBuilder, private signInService: SignInService, private router: Router) {
+    this.user = new UserRegistration();
     this.registerForm = fb.group({
-      'username': ['', [Validators.required, Validators.minLength(6)]],
-      'email': ['', [Validators.required, regexValidator(/[^@]+@[a-z.]+\.[a-z]+/)]],
-      'password': ['', Validators.minLength(8)],
-      'mpassword': ['', Validators.minLength(8)]
+      'username': [this.user.username, [Validators.required, Validators.minLength(6)]],
+      'email': [this.user.email, [Validators.required, regexValidator(/[^@]+@[a-z.]+\.[a-z]+/)]],
+      'password': [this.user.password, [Validators.required,Validators.minLength(8)]],
+      'mpassword': ['', Validators.minLength(8)],
     }, {
       validator: PasswordValidation.MatchPassword
+    }); // async validator -> user already exists
+
+    this.errorMessages = {
+      username: {required: "Username is required.", minlength: "Username should be at least 6 characters."},
+      email: {required: "Email is required.", regexValidator: "Provide a valid email address."},
+      password: {required: "Password is required.", minlength: "Password should be at least 8 characters"},
+      mpassword: {minlength: 'Password should be at least 8 characters', mpassword: 'Passwords don\'t match'}
+    };
+  }
+
+  submit(){
+    if (this.registerForm.invalid) return;
+
+    let newUser = new UserRegistration();
+    newUser.setUser(this.registerForm.value);
+
+    this.signInService.register(newUser).then(resp => {
+      console.log(resp);
+      this.router.navigate(['login']);
     });
   }
 
-  // validate(field: FormControl): boolean{
-  //   return field.invalid && (field.dirty || field.touched);
-  // }
-
-  submit(){
-    console.log(this.registerForm.value);
+  getErrorMessage(key: string): object {
+    return this.errorMessages[key];
   }
 
   get username() { return this.registerForm.get('username'); }

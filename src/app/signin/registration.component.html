@@ -3,21 +3,22 @@
 
   <form class="form-horizontal" [formGroup]="registerForm" (ngSubmit)="submit()" novalidate>
 
-    <form-input [label]="'Username: '" [inputId]="'username'" [field]="username" [fieldName]="'username'"
+    <form-input [label]="'Username: '" [inputId]="'username'" [field]="username"
                 [group]="registerForm"
-                [errorMessages]="{minlength: 'Username should be at least 6 characters.', required: 'Username is required.'}"></form-input>
+                [errorMessages]="getErrorMessage('username')"></form-input>
+                <!--[errorMessages]="{minlength: 'Username should be at least 6 characters.', required: 'Username is required.'}"></form-input>-->
 
-    <form-input [label]="'Email: '" [inputId]="'email'" [field]="email" [fieldName]="'email'"
+    <form-input [label]="'Email: '" [inputId]="'email'" [field]="email"
                 [group]="registerForm"
-                [errorMessages]="{regexValidator: 'Provide a valid email address.', required: 'Email is required.'}"></form-input>
+                [errorMessages]="getErrorMessage('email')"></form-input>
 
-    <form-input [label]="'Password: '" [inputId]="'password'" [field]="password" [fieldName]="'password'"
+    <form-input [label]="'Password: '" [inputId]="'password'" [field]="password"
                 [group]="registerForm" [type]="'password'"
-                [errorMessages]="{minlength: 'Password should be at least 8 characters'}"></form-input>
+                [errorMessages]="getErrorMessage('password')"></form-input>
 
-    <form-input [label]="'Confirm password: '" [inputId]="'mpassword'" [field]="mpassword" [fieldName]="'mpassword'"
+    <form-input [label]="'Confirm password: '" [inputId]="'mpassword'" [field]="mpassword"
                 [group]="registerForm" [type]="'password'"
-                [errorMessages]="{minlength: 'Password should be at least 8 characters', mpassword: 'Passwords don\'t match'}"></form-input>
+                [errorMessages]="getErrorMessage('mpassword')"></form-input>
 
     <input class="col-sm-offset-2 btn btn-default" [ngClass]="{disabled: registerForm.invalid}" type="submit" value="Register" />
 
