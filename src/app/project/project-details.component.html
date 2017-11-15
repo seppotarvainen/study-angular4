@@ -52,7 +52,6 @@
     <div class="row">
       <h1>
         <span>{{ project.title }}</span>
-        <sup *ngIf="project.done"><span class="super label label-info">DONE</span></sup>
       </h1>
 
       <p class="lead">
@@ -72,9 +71,6 @@
             <span class="glyphicon glyphicon-trash" aria-hidden="true"></span> Delete project
           </button>
         </p>
-        <form>
-          <input (click)="onClickMarkAsDone($event.target.checked)" type="checkbox" id="project-done" [checked]="project.done"> <label for="project-done">Mark project as done</label>
-        </form>
       </div>
     </div>
   </div>

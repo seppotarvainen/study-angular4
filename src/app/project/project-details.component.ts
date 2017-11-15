@@ -67,13 +67,6 @@ export class ProjectDetailsComponent implements OnChanges{
     return "Project title";
   }
 
-  onClickMarkAsDone(event: boolean): void {
-    this.projectCopy.done = event;
-    this.projectService.updateProject(this.projectCopy).then(response => {
-      this.onEditProject.emit(response);
-    });
-  }
-
   updateTime(newTime: number): void {
     let copy = Object.assign(this.project) as Project;
     copy.timeInSeconds = newTime;
