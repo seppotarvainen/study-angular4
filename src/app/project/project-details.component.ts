@@ -5,7 +5,6 @@
 import {Component, EventEmitter, Input, OnChanges, Output} from "@angular/core";
 import Project from "./project";
 import {ProjectService} from "./project.service";
-import ChecklistItem from "../checklist/checklist-item";
 
 @Component({
   templateUrl: "./project-details.component.html",
@@ -18,7 +17,6 @@ export class ProjectDetailsComponent implements OnChanges{
   @Output() onAddProject: EventEmitter<Project> = new EventEmitter<Project>();
   @Output() onDelete: EventEmitter<Project> = new EventEmitter<Project>();
   @Output() onChangeEditStatus: EventEmitter<boolean> = new EventEmitter<boolean>();
-  @Output() onLockProject: EventEmitter<boolean> = new EventEmitter<boolean>();
   projectCopy: Project;
 
   name: string = '';
@@ -54,21 +52,12 @@ export class ProjectDetailsComponent implements OnChanges{
     }
   }
 
-  lockProject(value: boolean): void {
-    this.isProjectLocked = value;
-    this.onLockProject.emit(value);
-  }
-
   onClickDelete(): void {
     if (this.isProjectLocked) return;
 
     this.projectService.deleteProject(this.project).then(() => {
       this.onDelete.emit(this.project);
     })
-  }
-
-  onAddChecklistItem(updatedProject: Project): void {
-    this.onEditProject.emit(updatedProject);
   }
 
   showProjectHeading(): string {
@@ -83,15 +72,6 @@ export class ProjectDetailsComponent implements OnChanges{
     this.projectService.updateProject(this.projectCopy).then(response => {
       this.onEditProject.emit(response);
     });
-
-  }
-
-  isTitleValid(title: any): boolean {
-    return title.errors && (title.dirty || title.touched);
-  }
-
-  isDescriptionValid(description: any): boolean {
-    return description.errors && (description.dirty || description.touched);
   }
 
   updateTime(newTime: number): void {

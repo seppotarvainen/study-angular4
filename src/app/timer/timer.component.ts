@@ -11,7 +11,6 @@ import {Component, EventEmitter, Input, Output} from "@angular/core";
 export class TimerComponent{
   @Input() time: number;
   @Output() onUpdateTime = new EventEmitter<number>();
-  @Output() onLockProject = new EventEmitter<boolean>();
 
   currentTime: number = 0;
   running: boolean = false;
@@ -36,7 +35,6 @@ export class TimerComponent{
       clearInterval(this.timer);
       this.onUpdateTime.emit(this.time);
     }
-    this.onLockProject.emit(this.running);
   }
 
   tick(): void {

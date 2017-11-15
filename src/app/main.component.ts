@@ -25,7 +25,6 @@ import {ProjectService} from "./project/project.service";
                        (onAddProject)="onAddProject($event)"
                        (onChangeEditStatus)="onChangeEditStatus($event)"
                        (onDelete)="onDelete($event)"
-                       (onLockProject)="lockProject($event)"
                        [project]="selectedProject"
                        [isEditMode]="isEditMode"></project-details>
     </div>
@@ -58,7 +57,6 @@ export class MainComponent implements OnInit{
   onEditProject(project: Project): void{
     let index: number = this.projects.findIndex(p => p.id === project.id);
     this.projects[index] = project;
-    console.log(project);
     this.onProjectFormSubmit(project);
   }
 
@@ -83,7 +81,6 @@ export class MainComponent implements OnInit{
     if (this.isSelectedLocked) return;
 
     this.selectedProject = new Project();
-    console.log(this.selectedProject);
     this.isEditMode = true;
   }
 
@@ -99,10 +96,6 @@ export class MainComponent implements OnInit{
       this.selectedProject = null;
       this.lastSelectedProject = null;
     }
-  }
-
-  lockProject(isLocked: boolean) {
-    this.isSelectedLocked = isLocked;
   }
 
   onDelete(project: Project) {

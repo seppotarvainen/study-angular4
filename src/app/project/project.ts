@@ -1,4 +1,3 @@
-import ChecklistItem from "../checklist/checklist-item";
 /**
  * Created by Seppo on 19/07/2017.
  */
@@ -12,13 +11,11 @@ export default class Project {
   description: string;
   timeInSeconds: number;
   done: boolean;
-  checklist: ChecklistItem[];
 
   constructor() {
     this.title = "";
     this.description = "";
     this.timeInSeconds = 0;
     this.done = false;
-    this.checklist = [];
   };
 }
