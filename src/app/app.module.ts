@@ -3,17 +3,21 @@ import {NgModule} from "@angular/core";
 import {AppComponent} from "./app.component";
 import {ProjectListComponent} from "./project/project-list.component";
 import {ProjectService} from "./project/project.service";
-import {ProjectDetailsComponent} from "./project/project-details.component";
+import {ProjectFormComponent} from "./project/project-form.component";
 import {HttpModule} from "@angular/http";
 import {MainComponent} from "./main.component";
 import {TimerComponent} from "./timer/timer.component";
 import {FormsModule} from "@angular/forms";
 import {MaxLenghtValidatorDirective} from "./max-length-validator.directive";
+import {ProjectDetailsComponent} from "./project/project-details.component";
+import {ProjectViewComponent} from "./project/project-view.component";
 
 @NgModule({
   declarations: [
     AppComponent,
     ProjectListComponent,
+    ProjectFormComponent,
+    ProjectViewComponent,
     ProjectDetailsComponent,
     MainComponent,
     TimerComponent,

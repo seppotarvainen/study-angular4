@@ -4,6 +4,7 @@ import {Http} from "@angular/http";
 import "rxjs/add/operator/toPromise";
 
 import Project from "./project";
+import {BehaviorSubject} from "rxjs";
 
 @Injectable()
 export class ProjectService {
@@ -23,7 +24,10 @@ export class ProjectService {
   addProject(project: Project): Promise<Project> {
     return this.http.post(this.projectsUrl, project)
       .toPromise()
-      .then(response => response.json() as Project)
+      .then(response => {
+        let project = response.json() as Project;
+        this._projectList.next(project);
+      })
       .catch(this.handleError);
   }
 
@@ -39,7 +43,7 @@ export class ProjectService {
     const url = `${this.projectsUrl}/${project.id}`;
     return this.http.delete(url, project)
       .toPromise()
-      .then(() => null)
+      .then(() => this._projectListDelete.next(project.id))
       .catch(this.handleError);
   }
 
@@ -47,4 +51,10 @@ export class ProjectService {
     console.error("Error occurred!", error);
     return Promise.reject(error.message || error);
   }
+
+  private _projectList = new BehaviorSubject<Project>(null);
+  projectList$ = this._projectList.asObservable();
+
+  private _projectListDelete = new BehaviorSubject<number>(-1);
+  projectListDelete$ = this._projectListDelete.asObservable();
 }
