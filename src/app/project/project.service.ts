@@ -158,7 +158,7 @@ export class ProjectService extends BaseService{
   }
 
   createRecording(projectId: number, subProjectId: number, recording: Recording) {
-    const url = `${this.projectsUrl}/${projectId}/sub-projects/${subProjectId}`;
+    const url = `${this.projectsUrl}/${projectId}/sub-projects/${subProjectId}/recordings`;
 
     return this.http.post(url, recording, this.getHeaders())
       .toPromise()
@@ -167,29 +167,43 @@ export class ProjectService extends BaseService{
   }
 
   /**
-   * Add new checklist item to project
+   * Add new checklist item to sub project
    * @param projectId - project
+   * @param subProjectId - sub project
    * @param checklistItem - new checklist item
    * @returns {Promise<any|ChecklistItem>}
    */
-  addChecklistItem(projectId: number, checklistItem: ChecklistItem): Promise<ChecklistItem> {
-    const url = `${this.projectsUrl}/${projectId}/checklist-items`;
+  addChecklistItem(projectId: number, subProjectId:number, checklistItem: ChecklistItem): Promise<ChecklistItem> {
+    const url = `${this.projectsUrl}/${projectId}/sub-projects/${subProjectId}/checklist-items`;
     return this.http.post(url, checklistItem, this.getHeaders())
       .toPromise()
       .then(response => response.json() as ChecklistItem)
       .catch(this.handleError);
   }
 
-  editChecklistItem(projectId: number, checklistItem: ChecklistItem): Promise<ChecklistItem> {
-    const url = `${this.projectsUrl}/${projectId}/checklist-items/${checklistItem.id}`;
+  /**
+   * Edit sub project checklist item
+   * @param projectId
+   * @param subProjectId
+   * @param checklistItem
+   * @returns {Promise<never|ChecklistItem>}
+   */
+  editChecklistItem(projectId: number, subProjectId: number, checklistItem: ChecklistItem): Promise<ChecklistItem> {
+    const url = `${this.projectsUrl}/${projectId}/sub-projects/${subProjectId}/checklist-items/${checklistItem.id}`;
     return this.http.put(url, checklistItem, this.getHeaders())
       .toPromise()
       .then(response => response.json() as ChecklistItem)
       .catch(this.handleError);
   }
 
-  deleteCompletedItems(projectId: number): Promise<any> {
-    const url = `${this.projectsUrl}/${projectId}/checklist-items`;
+  /**
+   * Delete completed items of given sub project
+   * @param projectId
+   * @param subProjectId
+   * @returns {Promise<never|any>}
+   */
+  deleteCompletedItems(projectId: number, subProjectId: number): Promise<any> {
+    const url = `${this.projectsUrl}/${projectId}/sub-projects/${subProjectId}/checklist-items`;
     return this.http.delete(url, this.getHeaders())
       .toPromise()
       .then(response => response.json())

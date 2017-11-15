@@ -1,7 +1,5 @@
-
-import {AfterContentInit, Component, EventEmitter, Input, OnInit, Output} from "@angular/core";
+import {Component, EventEmitter, Input, Output} from "@angular/core";
 import ChecklistItem from "./checklist-item";
-import Project from "../project/project";
 import {ProjectService} from "../project/project.service";
 
 
@@ -13,6 +11,7 @@ export class ChecklistComponent {
 
   @Input() checklist: ChecklistItem[];
   @Input() projectId: number;
+  @Input() subProjectId: number;
   @Output() onAddChecklistItem = new EventEmitter<ChecklistItem>();
   isEditMode: boolean = false;
   item: string;
@@ -24,9 +23,14 @@ export class ChecklistComponent {
   }
 
   addChecklistItem(item: ChecklistItem): void{
+    if (!item.content || item.content.length === 0) {
+      this.isEditMode = false;
+      return;
+    }
+
     this.onAddChecklistItem.emit(item);
 
-    this.projectService.addChecklistItem(this.projectId, item).then(response => {
+    this.projectService.addChecklistItem(this.projectId, this.subProjectId, item).then(response => {
         this.checklist.push(response);
         this.item = null;
       }
@@ -38,18 +42,16 @@ export class ChecklistComponent {
   }
 
   clickAddNewTask(): void {
-    this.projectService.setLocked(true);
     this.isEditMode = true;
   }
 
   clickCancel(): void {
-    this.projectService.setLocked(false);
     this.isEditMode = false;
   }
 
   setChecklistItemDone(item: ChecklistItem, value: boolean): void {
     item.done = value;
-    this.projectService.editChecklistItem(this.projectId, item).then(
+    this.projectService.editChecklistItem(this.projectId, this.subProjectId, item).then(
       response => {
         let index = this.checklist.findIndex(i => i.id === item.id);
         this.checklist[index] = response;
@@ -58,7 +60,7 @@ export class ChecklistComponent {
   }
 
   clickRemoveDoneTasks() {
-    this.projectService.deleteCompletedItems(this.projectId).then(
+    this.projectService.deleteCompletedItems(this.projectId, this.subProjectId).then(
       response => {
         if (response === null) {
           this.checklist = this.checklist.filter(item => !item.done);

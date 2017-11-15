@@ -1,0 +1,10 @@
+<div>
+    <input #userBox class="form-control" type="text" placeholder="Filter users..." (keyup)="onChangeSearchTerm(userBox.value)">
+    <div class="form-control my-resizable">
+    <button *ngFor="let user of filteredUsers" class="btn btn-default" [ngClass]="{'btn-info': user.getSelected(), 'disabled': getDisabled(user)}" type="button" (click)="onClick(user)">
+      <img [src]="getAvatar(user.username)" class="img-circle img-border"> {{user.username}}
+    </button>
+    <p *ngIf="filteredUsers.length === 0"><i>No users found</i></p>
+    </div>
+    <p>{{getUsersLengthMessage()}}</p>
+</div>

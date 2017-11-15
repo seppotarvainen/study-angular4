@@ -1,5 +1,6 @@
 import ChecklistItem from "../checklist/checklist-item";
 import SubProject from "../subproject/sub-project";
+import {UserInfo} from "../utils/request-objects";
 /**
  * Created by Seppo on 19/07/2017.
  */
@@ -14,6 +15,7 @@ export default class Project {
   // timeInSeconds: number;
   done: boolean;
   subProjects: SubProject[];
+  users: UserInfo[];
   // checklist: ChecklistItem[];
 
   constructor() {

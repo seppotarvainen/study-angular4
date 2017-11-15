@@ -7,50 +7,32 @@
                     (cancelForm)="onFormCancel($event)">
   </sub-project-form>
 
-    <!-- SUB PROJECT VIEW -->
+  <!-- SUB PROJECT VIEW -->
   <ng-template #subProjectDetails>
-    <div *ngIf="subProjects.length > 0">
-    <div>
-      <div class="form-inline">
+      <div class="form-inline add-padding">
           <label>Sort by:</label>&emsp;<select class="form-control " (change)="setOrdering($event.target.value)"><option *ngFor="let opt of sortingOptions">{{opt}}</option></select>
+          <button class="btn btn-default pull-right" (click)="onClickAddSubProject()">Add sub project</button>
       </div>
-    </div>
-    <div class="sub-projects">
+    <div *ngIf="subProjects.length > 0">
       <div class="row" *ngFor="let subProject of subProjects">
-        <div class="col-lg-4">
-
-          <timer [subProjectId]="subProject.id"
-                 [recordings]="subProject.recordings"
-                 (onUpdateTime)="createRecording($event)"></timer>
-        </div>
-
-        <div class="col-lg-6">
-          <h5 class="text-uppercase">{{subProject.title}}</h5>
-          <p>{{subProject.comment}}</p>
-        </div>
-
-
-        <div class="col-lg-2">
-          <button (click)="onClickEditSubProject(subProject)" class="btn btn-default" title="edit">
-            <span class="glyphicon glyphicon-pencil"></span>
-          </button>
-          <button (click)="onClickDeleteSubProject(subProject)" class="btn btn-danger" title="delete">
-            <span class="glyphicon glyphicon-trash"></span>
-          </button>
-        </div>
-
+      <sub-project-details [projectId]="projectId"
+                           [subProject]="subProject"
+                           [selected]="subProject === selectedSubProject"
+                           (clickEditSubProject)="onClickEditSubProject($event)"
+                           (clickDeleteSubProject)="onClickDeleteSubProject($event)"
+                           (toggleSubProjectInfo)="onSelectSubProject($event)"
+                           (updateSubProject)="onUpdateSubProject($event)">
+      </sub-project-details>
       </div>
-    </div>
       <div>
         <p myLock>Project total time: {{getProjectTotalTime() | duration}}</p>
       </div>
 
     </div>
     <div *ngIf="subProjects.length === 0">
-      <p>No sub projects :(</p>
+      <p class="small"><i>No sub projects</i></p>
     </div>
     <br>
-    <button class="btn btn-default" (click)="onClickAddSubProject()">Add sub project</button>
   </ng-template>
 </div>
 

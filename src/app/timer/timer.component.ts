@@ -16,12 +16,12 @@ export class TimerComponent implements OnInit{
 
   @Input() recordings: Recording[];
   @Input() subProjectId: number;
-  @Output() onUpdateTime = new EventEmitter<{recording: Recording, subProjectId: number}>();
-  @Output() onToggleTimer = new EventEmitter<boolean>();
+  @Output() onUpdateTime = new EventEmitter<Recording>();
+@Output() onToggleTimer = new EventEmitter<boolean>();
 
-  totalTime: number = 0;
-  currentTime: number = 0;
-  running: boolean = false;
+totalTime: number = 0;
+currentTime: number = 0;
+running: boolean = false;
 
   timer = null;
   currentRecording: Recording;
@@ -40,6 +40,8 @@ export class TimerComponent implements OnInit{
   }
 
   toggleTimer(event): void {
+    if (this.projectService.getLocked() && !this.running) return;
+
     this.running = !this.running;
     if (this.running) {
       this.currentRecording = new Recording();
@@ -53,7 +55,7 @@ export class TimerComponent implements OnInit{
       this.currentRecording.end = new Date(this.currentRecording.start.getTime() + this.currentTime);
       this.currentTime = 0;
       this.projectService.setRunningCurrentTime(this.currentTime);
-      this.onUpdateTime.emit({recording: this.currentRecording, subProjectId: this.subProjectId});
+      this.onUpdateTime.emit(this.currentRecording);
 
       clearInterval(this.timer);
     }
@@ -90,5 +92,12 @@ export class TimerComponent implements OnInit{
       return this.recordings[this.recordings.length -1].start;
   }
 
+  // when running, never show gray
+  getLockStatus() {
+    if (!this.running) return false;
+  }
+
+  // if locked --> show gray
+  // when running, never show gray
 
 }

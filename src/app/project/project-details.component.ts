@@ -65,14 +65,18 @@ export class ProjectDetailsComponent implements OnInit{
     });
   }
 
-  updateTime(newTime: number): void {
-    let copy = this.getProjectCopy();
+  getAvatar(username: string): string {
+    return `https://api.adorable.io/avatars/40/${username}.png`;
+  }
+
+  // updateTime(newTime: number): void {
+  //   let copy = this.getProjectCopy();
     // copy.timeInSeconds = newTime;
     //
     // this.projectService.updateProject(copy).then(response => {
     //   this.project.timeInSeconds = response.timeInSeconds;
     // });
-  }
+  // }
 
   private getProjectCopy(): Project {
     return Object.assign(this.project);

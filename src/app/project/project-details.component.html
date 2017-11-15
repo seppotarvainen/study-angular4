@@ -1,5 +1,6 @@
 <div *ngIf="project; else no_content">
   <div class="row">
+    <div class="col-md-9">
     <h1>
       <span>{{ project.title }}</span>
       <sup *ngIf="project.done"><span class="super label label-info">DONE</span></sup>
@@ -27,10 +28,16 @@
         <input (click)="onClickMarkAsDone($event.target.checked)" type="checkbox" id="project-done"
                [checked]="project.done"> <label for="project-done">Mark project as done</label>
     </div>
-    <hr>
-  </div>
+    </div>
+    <div class="col-md-3">
+      <h3>Users</h3>
+      <p *ngFor="let user of project.users">
+        <img [src]="getAvatar(user.username)" class="img-circle"> {{user.username}}
+      </p>
+    </div>
 
-  <div class="row">
+  </div>
+  <hr>
     <!-- onAddChecklistItem="onAddChecklistItem($event)"-->
     <sub-projects [projectId]="project.id" [subProjects]="project.subProjects"></sub-projects>
     <!--<checklist [checklist]="project.checklist" [projectId]="project.id"></checklist>-->
@@ -41,7 +48,6 @@
     <!--&lt;!&ndash;(onLockProject)="lockProject($event)">&ndash;&gt;-->
 
     <!--</timer>-->
-  </div>
 </div>
 
 <!-- Shown if no project is selected -->

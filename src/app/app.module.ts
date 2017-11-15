@@ -23,6 +23,9 @@ import {FormInputModule} from "./form/form-input.module";
 import {Lock} from "./utils/lock.directive";
 import {SubProjectComponent} from "./subproject/sub-project.component";
 import {SubProjectFormComponent} from "./subproject/sub-project-form.component";
+import {SubProjectDetailsComponent} from "./subproject/sub-project-details.component";
+import {UserSelectionComponent} from "./userselection/user-selection.component";
+import {UserService} from "./userselection/user.service";
 
 @NgModule({
   declarations: [
@@ -34,10 +37,12 @@ import {SubProjectFormComponent} from "./subproject/sub-project-form.component";
     ChecklistComponent,
     SubProjectComponent,
     SubProjectFormComponent,
+    SubProjectDetailsComponent,
     TimerComponent,
     MaxLenghtValidatorDirective,
     DurationPipe,
     PageNotFoundComponent,
+    UserSelectionComponent,
     Lock
   ],
   imports: [
@@ -52,6 +57,7 @@ import {SubProjectFormComponent} from "./subproject/sub-project-form.component";
   providers: [
     ProjectService,
     AuthService,
+    UserService,
     AuthGuard],
   schemas: [
     CUSTOM_ELEMENTS_SCHEMA

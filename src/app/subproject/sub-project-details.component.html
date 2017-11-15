@@ -1,0 +1,31 @@
+<div class="row">
+  <div class="col-lg-4">
+
+    <timer [subProjectId]="subProject.id"
+           [recordings]="subProject.recordings"
+           (onToggleTimer)="clickTimer($event)"
+           (onUpdateTime)="createRecording($event)"></timer>
+  </div>
+
+  <div class="col-lg-6">
+    <h5 class="text-uppercase"><a class="pointer" (click)="toggleInfo()">{{subProject.title}}</a></h5>
+    <p>{{subProject.comment}}</p>
+  </div>
+
+  <div class="col-lg-2">
+    <!--<button (click)="onClickEditSubProject(subProject)" class="btn btn-default" title="edit">-->
+    <button class="btn btn-default" title="edit" (click)="clickEditSubProject.emit(subProject)" myLock>
+      <span class="glyphicon glyphicon-pencil"></span>
+    </button>
+    <!--<button (click)="onClickDeleteSubProject(subProject)" class="btn btn-danger" title="delete">-->
+    <button class="btn btn-danger" title="delete" (click)="clickDeleteSubProject.emit(subProject)" myLock>
+      <span class="glyphicon glyphicon-trash"></span>
+    </button>
+  </div>
+<!-- Show checklist if project is selected -->
+</div>
+
+<div class="row">
+  <checklist *ngIf="selected" [checklist]="checklist" [projectId]="projectId" [subProjectId]="subProject.id"></checklist>
+</div>
+<hr>

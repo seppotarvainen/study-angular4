@@ -4,6 +4,7 @@ import {ProjectService} from "./project.service";
 import {Location} from "@angular/common";
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import Project from "./project";
+import {UserInfo} from "../utils/request-objects";
 /**
  * Created by Seppo on 24/08/2017.
  */
@@ -16,6 +17,7 @@ export class ProjectFormComponent implements OnInit {
 
   project: Project;
   projectForm: FormGroup;
+  projectUsers: UserInfo[];
 
   constructor(@Inject(FormBuilder) fb: FormBuilder,
               private route: ActivatedRoute,
@@ -38,12 +40,14 @@ export class ProjectFormComponent implements OnInit {
                 title: project.title,
                 description: project.description
               };
-
               this.project = project;
+              this.projectUsers = project.users.map(u => new UserInfo(u));
               this.projectForm.setValue(projectToEdit);
+
             });
         } else {
           this.project = new Project();
+          this.projectUsers = [this.projectService.getUser()];
         }
       }
     );
@@ -61,10 +65,15 @@ export class ProjectFormComponent implements OnInit {
     this.location.back();
   }
 
+  onUpdateSelectedUsers(selectedUsers: UserInfo[]) {
+    this.projectUsers = selectedUsers;
+  }
+
   submit(): void {
     if (this.projectForm.invalid) return;
 
     let projectToEdit = Object.assign(this.projectForm.value);
+    projectToEdit.users = this.projectUsers;
 
     if (this.project.id){
       projectToEdit['id'] = this.project.id;

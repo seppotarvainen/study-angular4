@@ -12,7 +12,7 @@ import Recording from "../timer/recording";
   templateUrl: "sub-project.component.html",
   styles: [`
     .add-padding {
-      padding-left:0.6em;
+      padding-bottom:0.6em;
     }
     .sub-projects > div {
       padding: 0.25em 0.5em;
@@ -44,11 +44,10 @@ export class SubProjectComponent implements OnInit{
   }
 
   onFormCancel(cancelStatus: boolean): void {
-    this.formView = cancelStatus;
-    this.projectService.setLocked(cancelStatus);
+    this.setFormView(cancelStatus);
   }
 
-  sortByTitle(a: SubProject, b: SubProject): number {
+  private sortByTitle(a: SubProject, b: SubProject): number {
     let subTitleA = a.title.toUpperCase();
     let subTitleB = b.title.toUpperCase();
     if (subTitleA > subTitleB) return 1;
@@ -70,6 +69,11 @@ export class SubProjectComponent implements OnInit{
     if (subProjectLatestA < subProjectLatestB) return 1;
     else if (subProjectLatestA > subProjectLatestB) return -1;
     return 0;
+  }
+
+  private setFormView(viewStatus: boolean) {
+    this.formView = viewStatus;
+    this.projectService.setLocked(viewStatus);
   }
 
   setOrdering(event: string){
@@ -94,36 +98,43 @@ export class SubProjectComponent implements OnInit{
     } else {
       this.subProjects[index] = subProject;
     }
-    this.formView = false;
-    this.projectService.setLocked(false);
+    this.setFormView(false);
     this.sortSubProjects();
   }
 
   onClickAddSubProject() {
-    this.formView = true;
     this.selectedSubProject = new SubProject();
-    this.projectService.setLocked(true);
+    this.setFormView(true);
   }
 
   onClickEditSubProject(subProject: SubProject) {
+    if (this.projectService.getLocked()) return;
+
     this.selectedSubProject = subProject;
-    this.formView = true;
-    this.projectService.setLocked(true);
+    this.setFormView(true);
   }
 
   onClickDeleteSubProject(subProject: SubProject) {
+    if (this.projectService.getLocked()) return;
+
     this.projectService.deleteSubProject(this.projectId, subProject)
       .then(() => {
         this.subProjects = this.subProjects.filter(sub => sub.id !== subProject.id);
       });
   }
 
-  createRecording(event: {recording: Recording, subProjectId: number}) {
-    this.projectService.createRecording(this.projectId, event.subProjectId, event.recording)
-      .then(rec => {
-        this.subProjects.find(s => s.id === event.subProjectId).recordings.push(rec);
-        this.sortSubProjects();
-      });
+  onUpdateSubProject(subProject: SubProject) {
+    let index = this.subProjects.findIndex(sub => sub.id === subProject.id);
+    this.subProjects[index] = subProject;
+    this.sortSubProjects();
+  }
+
+  onSelectSubProject(subProject: SubProject) {
+    if (this.selectedSubProject === subProject) {
+      this.selectedSubProject = null;
+    } else {
+      this.selectedSubProject = subProject;
+    }
   }
 
   sortSubProjects(): void {
@@ -156,18 +167,4 @@ export class SubProjectComponent implements OnInit{
     return max;
     // return 1;
   }
-
-  toggleTimer(){
-
-  }
-
-  setSelectedSubProject(subProject: SubProject) {
-    this.selectedSubProject = subProject;
-  }
-}
-
-enum SortingOption {
-  Name,
-  Latest,
-  Length,
 }

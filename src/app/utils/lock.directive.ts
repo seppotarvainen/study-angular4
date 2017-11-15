@@ -1,4 +1,4 @@
-import {Directive, ElementRef, Input, OnInit, Renderer2} from "@angular/core";
+import {Directive, ElementRef, HostBinding, Input, OnChanges, OnInit, Renderer2} from "@angular/core";
 import {ProjectService} from "../project/project.service";
 /**
  * Created by Seppo on 29/08/2017.
@@ -7,16 +7,35 @@ import {ProjectService} from "../project/project.service";
 @Directive({
   selector: '[myLock]'
 })
-export class Lock {
-  @Input('myAutofocus') isFocus?: boolean;
+export class Lock implements OnInit, OnChanges {
 
-  constructor(private el: ElementRef, private projectService: ProjectService) {
+  @Input() isLocked: boolean = false;
+
+  constructor(private el: ElementRef, private projectService: ProjectService) {}
+
+  ngOnInit(): void {
+    if (this.isLocked) {
+      this.setStyle(true);
+      return;
+    }
+
     this.projectService.lock$.subscribe(value => {
-      if (value) {
-        this.el.nativeElement.classList.add('disabled');
-      } else {
-        this.el.nativeElement.classList.remove('disabled');
-      }
+      this.setStyle(value);
     });
+  }
+
+  ngOnChanges(): void {
+    console.log("Changed");
+    console.log(this.isLocked);
+    this.setStyle(this.isLocked);
+  }
+
+
+  private setStyle(lockedStatus) {
+    if (lockedStatus) {
+      this.el.nativeElement.classList.add('disabled');
+    } else {
+      this.el.nativeElement.classList.remove('disabled');
+    }
   }
 }

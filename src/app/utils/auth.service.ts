@@ -1,5 +1,6 @@
 import {Injectable} from "@angular/core";
 import { Headers } from '@angular/http';
+import {UserInfo} from "./request-objects";
 /**
  * Created by Seppo on 23/08/2017.
  */
@@ -7,13 +8,17 @@ import { Headers } from '@angular/http';
 @Injectable()
 export class AuthService {
 
-  headers: Headers = new Headers();
+  private headers: Headers = new Headers();
+  private user: UserInfo;
 
   setAuth(token: string) {
     let auth = "Bearer " + token;
     this.headers.append("Authorization", auth);
     sessionStorage.setItem("auth", auth);
     console.log(sessionStorage);
+    let userData = this.parseJwt(token);
+    console.log(userData);
+    this.user = new UserInfo(userData);
   }
 
   getHeaders(): Headers{
@@ -29,4 +34,24 @@ export class AuthService {
     // }
     // return this.headers;
   }
+
+  getUser(): UserInfo {
+    return this.user;
+  }
+
+
+  checkAuthentication() {
+    let token = sessionStorage.getItem("auth");
+    if (token !== null && token.startsWith("Bearer ")) {
+      this.setAuth(token.split(' ')[1]);
+    }
+  }
+
+  private parseJwt (token) {
+    if (!token || token.length === 0) return;
+    let base64Url = token.split('.')[1];
+    let base64 = base64Url.replace('-', '+').replace('_', '/');
+    return JSON.parse(window.atob(base64));
+  };
+
 }
