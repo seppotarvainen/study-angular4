@@ -2,7 +2,7 @@
  * Created by Seppo on 19/07/2017.
  */
 
-import {Component, Input, OnInit} from "@angular/core";
+import {Component, OnInit} from "@angular/core";
 import Project from "./project/project";
 import {ProjectService} from "./project/project.service";
 import {ProjectFormEvent} from "./utils/project-form-event";
@@ -13,9 +13,10 @@ import {ProjectFormEvent} from "./utils/project-form-event";
     <div class="col-md-3">
       <project-list [projects]="projects"
                     [selectedProject]="selectedProject"
+                    [locked]="locked"
                     (onSelectProject)="onSelectProject($event)"></project-list>
 
-      <button class="btn btn-default" (click)="onClickAddProject()">
+      <button class="btn btn-default" [disabled]="locked" (click)="onClickAddProject()">
         <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
         <span>Add project</span>
       </button>
@@ -30,6 +31,7 @@ export class MainComponent implements OnInit{
   selectedProject: Project;
   projects: Project[];
   isEditMode: boolean = false;
+  locked: boolean = false;
 
   constructor(private projectService: ProjectService) {
 
@@ -44,6 +46,8 @@ export class MainComponent implements OnInit{
     this.projectService.projectListDelete$.subscribe(projectId => {
       if (projectId >= 0) this.onDelete(projectId);
     });
+
+    this.projectService.lock$.subscribe(state => this.locked = state);
   }
 
   ngOnInit(): void {

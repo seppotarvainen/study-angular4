@@ -17,10 +17,10 @@
     <hr>
     <div>
       <p>&ensp;
-        <button type="button" class="btn btn-default" (click)="onClickEditProject()">
+        <button type="button" class="btn btn-default" (click)="onClickEditProject()" [disabled]="locked">
           Edit project
         </button>
-        <button type="button" class="btn btn-danger" (click)="onClickDelete()">
+        <button type="button" class="btn btn-danger" (click)="onClickDelete()" [disabled]="locked">
           <span class="glyphicon glyphicon-trash" aria-hidden="true"></span> Delete project
         </button>
       </p>

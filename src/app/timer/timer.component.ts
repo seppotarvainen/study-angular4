@@ -3,6 +3,7 @@
  */
 
 import {Component, EventEmitter, Input, Output} from "@angular/core";
+import {ProjectService} from "../project/project.service";
 
 @Component({
   templateUrl: "./timer.component.html",
@@ -17,7 +18,7 @@ export class TimerComponent{
 
   timer = null;
 
-  constructor() {
+  constructor(private projectService: ProjectService) {
     this.currentTime = 0;
     this.tick = this.tick.bind(this);
   }
@@ -25,11 +26,13 @@ export class TimerComponent{
   toggleTimer(event): void {
     this.running = !this.running;
     if (this.running) {
+      this.projectService.setLock(true);
       this.timer = setInterval(
         this.tick,
         1000
       );
     } else {
+      this.projectService.setLock(false);
       this.time += this.currentTime;
       this.currentTime = 0;
       clearInterval(this.timer);

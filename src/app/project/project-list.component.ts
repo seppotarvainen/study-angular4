@@ -11,6 +11,7 @@ import Project from "./project";
 export class ProjectListComponent {
   @Input() projects: Project[];
   @Input() selectedProject: Project;
+  @Input() locked: boolean;
   @Output() onSelectProject: EventEmitter<Project> = new EventEmitter<Project>();
 
   onSelect(project: Project): void {
