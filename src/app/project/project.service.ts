@@ -50,6 +50,10 @@ export class ProjectService {
       .catch(this.handleError);
   }
 
+  setLock(lockState: boolean): void {
+    this._lock.next(lockState);
+  }
+
   private handleError(error: any): Promise<any> {
     console.error("Error occurred!", error);
     return Promise.reject(error.message || error);
@@ -63,4 +67,7 @@ export class ProjectService {
 
   private _projectListDelete = new BehaviorSubject<number>(-1);
   projectListDelete$ = this._projectListDelete.asObservable();
+
+  private _lock = new BehaviorSubject<boolean>(false);
+  lock$ = this._lock.asObservable();
 }

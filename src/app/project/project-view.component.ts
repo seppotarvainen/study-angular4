@@ -13,8 +13,11 @@ import {ProjectFormEvent} from "../utils/project-form-event";
 export class ProjectViewComponent {
   @Input() project: Project;
   @Output() onChangeEditStatus: EventEmitter<ProjectFormEvent> = new EventEmitter<ProjectFormEvent>();
+  locked: boolean;
 
-  constructor(private projectService: ProjectService) {}
+  constructor(private projectService: ProjectService) {
+    this.projectService.lock$.subscribe(state => this.locked = state);
+  }
 
   updateTime(newTime: number): void {
     this.project.timeInSeconds = newTime;
