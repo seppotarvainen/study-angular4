@@ -10,10 +10,12 @@ export default class Project {
   title: string;
   description: string;
   timeInSeconds: number;
+  done: boolean;
 
   constructor() {
     this.title = "";
     this.description = "";
     this.timeInSeconds = 0;
+    this.done = false;
   };
 }

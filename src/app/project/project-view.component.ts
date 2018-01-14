@@ -15,11 +15,18 @@ export class ProjectViewComponent {
   constructor(private projectService: ProjectService) {}
 
   updateTime(newTime: number): void {
-    let copy = Object.assign(this.project) as Project;
-    copy.timeInSeconds = newTime;
+    this.project.timeInSeconds = newTime;
 
-    this.projectService.updateProject(copy).then(response => {
+    this.projectService.updateProject(this.project).then(response => {
       this.project.timeInSeconds = response.timeInSeconds;
+    });
+  }
+
+  toggleProjectDone(): void {
+    this.project.done = !this.project.done;
+
+    this.projectService.updateProject(this.project).then(response => {
+      this.project = response;
     });
   }
 
