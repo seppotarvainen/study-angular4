@@ -35,7 +35,10 @@ export class ProjectService {
     const url = `${this.projectsUrl}/${project.id}`;
     return this.http.put(url, project)
       .toPromise()
-      .then(response => response.json() as Project)
+      .then(response => {
+        let project = response.json() as Project;
+        this._projectListEdit.next(project);
+      })
       .catch(this.handleError);
   }
 
@@ -54,6 +57,9 @@ export class ProjectService {
 
   private _projectList = new BehaviorSubject<Project>(null);
   projectList$ = this._projectList.asObservable();
+
+  private _projectListEdit = new BehaviorSubject<Project>(null);
+  projectListEdit$ = this._projectListEdit.asObservable();
 
   private _projectListDelete = new BehaviorSubject<number>(-1);
   projectListDelete$ = this._projectListDelete.asObservable();
