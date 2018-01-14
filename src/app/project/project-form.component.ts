@@ -47,7 +47,7 @@ export class ProjectFormComponent implements OnChanges{
     if (this.projectCopy && this.projectCopy.title.length > 0) {
       return this.projectCopy.title;
     }
-    return "Project title";
+    return "Untitled project";
   }
 
 

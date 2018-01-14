@@ -8,7 +8,6 @@ import {HttpModule} from "@angular/http";
 import {MainComponent} from "./main.component";
 import {TimerComponent} from "./timer/timer.component";
 import {FormsModule} from "@angular/forms";
-import {MaxLenghtValidatorDirective} from "./max-length-validator.directive";
 import {ProjectDetailsComponent} from "./project/project-details.component";
 import {ProjectViewComponent} from "./project/project-view.component";
 
@@ -21,7 +20,6 @@ import {ProjectViewComponent} from "./project/project-view.component";
     ProjectDetailsComponent,
     MainComponent,
     TimerComponent,
-    MaxLenghtValidatorDirective
   ],
   imports: [
     BrowserModule,
