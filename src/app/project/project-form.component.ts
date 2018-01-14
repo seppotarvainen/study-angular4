@@ -12,13 +12,8 @@ import {ProjectService} from "./project.service";
 })
 export class ProjectFormComponent implements OnChanges{
   @Input() project: Project;
-  @Output() onEditProject: EventEmitter<Project> = new EventEmitter<Project>();
-  @Output() onAddProject: EventEmitter<Project> = new EventEmitter<Project>();
-  @Output() onDelete: EventEmitter<Project> = new EventEmitter<Project>();
   @Output() onChangeEditStatus: EventEmitter<boolean> = new EventEmitter<boolean>();
   projectCopy: Project;
-
-  isProjectLocked: boolean = false;
 
   constructor(private projectService: ProjectService) {}
 
@@ -31,23 +26,14 @@ export class ProjectFormComponent implements OnChanges{
   }
 
   onClickSubmit(): void {
-    if (this.projectCopy.id) {
-      this.projectService.updateProject(this.projectCopy).then(response => {
-        this.onEditProject.emit(response);
-      });
-    } else {
-      this.projectService.addProject(this.projectCopy).then(response => {
-        this.onAddProject.emit(response);
-        }
-      )
-    }
+    this.projectService.addProject(this.projectCopy);
   }
 
   showProjectHeading(): string {
     if (this.projectCopy && this.projectCopy.title.length > 0) {
       return this.projectCopy.title;
     }
-    return "Project title";
+    return "Untitled project";
   }
 
 

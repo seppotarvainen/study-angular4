@@ -6,7 +6,7 @@
  * Project data object
  */
 export default class Project {
-  id?: number;
+  id: number;
   title: string;
   description: string;
   timeInSeconds: number;
