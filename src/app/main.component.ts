@@ -36,6 +36,10 @@ export class MainComponent implements OnInit{
       if (project) this.onAddProject(project);
     });
 
+    this.projectService.projectListEdit$.subscribe(project => {
+      if (project) this.onUpdateProject(project);
+    });
+
     this.projectService.projectListDelete$.subscribe(projectId => {
       if (projectId >= 0) this.onDelete(projectId);
     });
@@ -49,6 +53,12 @@ export class MainComponent implements OnInit{
 
   onSelectProject(project: Project): void {
     this.selectedProject = project;
+  }
+
+  onUpdateProject(project: Project): void {
+    this.projects = this.projects.map(p => p.id === project.id ? project : p);
+    this.selectedProject = project;
+    this.isEditMode = false;
   }
 
   onAddProject(project: Project): void {
