@@ -5,6 +5,7 @@
 import {Component, EventEmitter, Input, OnChanges, Output} from "@angular/core";
 import Project from "./project";
 import {ProjectService} from "./project.service";
+import {ProjectFormEvent} from "../utils/project-form-event";
 
 @Component({
   templateUrl: "project-form.component.html",
@@ -12,7 +13,7 @@ import {ProjectService} from "./project.service";
 })
 export class ProjectFormComponent implements OnChanges{
   @Input() project: Project;
-  @Output() onChangeEditStatus: EventEmitter<boolean> = new EventEmitter<boolean>();
+  @Output() onChangeEditStatus: EventEmitter<ProjectFormEvent> = new EventEmitter<ProjectFormEvent>();
   projectCopy: Project;
 
   constructor(private projectService: ProjectService) {}
@@ -22,7 +23,7 @@ export class ProjectFormComponent implements OnChanges{
   }
 
   onClickCancel(): void {
-    this.onChangeEditStatus.emit(false);
+    this.onChangeEditStatus.emit(new ProjectFormEvent());
   }
 
   onClickSubmit(): void {

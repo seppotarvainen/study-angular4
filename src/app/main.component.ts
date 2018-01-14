@@ -5,6 +5,7 @@
 import {Component, Input, OnInit} from "@angular/core";
 import Project from "./project/project";
 import {ProjectService} from "./project/project.service";
+import {ProjectFormEvent} from "./utils/project-form-event";
 
 @Component({
   selector: "main",
@@ -77,8 +78,8 @@ export class MainComponent implements OnInit{
     this.selectedProject = null;
   }
 
-  changeEditStatus(event) {
-    this.selectedProject = null;
-    this.isEditMode = event;
+  changeEditStatus(event: ProjectFormEvent) {
+    this.selectedProject = event.projectToSelect;
+    this.isEditMode = event.editStatus;
   }
 }
