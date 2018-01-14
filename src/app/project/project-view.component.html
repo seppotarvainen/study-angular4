@@ -1,0 +1,33 @@
+<div *ngIf="project; else no_content">
+  <div class="row">
+    <h1>
+      <span>{{ project.title }}</span>
+    </h1>
+
+    <p class="lead">
+      {{ project.description }}
+    </p>
+
+    <!-- Timer component -->
+    <timer [time]="project.timeInSeconds"
+           (onUpdateTime)="updateTime($event)"></timer>
+  </div>
+
+  <div class="row">
+    <hr>
+    <div>
+      <p>&ensp;
+        <button type="button" class="btn btn-danger" (click)="onClickDelete()">
+          <span class="glyphicon glyphicon-trash" aria-hidden="true"></span> Delete project
+        </button>
+      </p>
+    </div>
+  </div>
+</div>
+
+<!-- Shown if no project is selected -->
+<ng-template #no_content>
+  <div class="row">
+    <h1>No project selected</h1>
+  </div>
+</ng-template>
