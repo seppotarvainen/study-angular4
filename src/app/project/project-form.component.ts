@@ -2,31 +2,40 @@
  * Created by Seppo on 19/07/2017.
  */
 
-import {Component, EventEmitter, Input, OnChanges, Output} from "@angular/core";
+import {Component, EventEmitter, Input, OnInit, Output} from "@angular/core";
 import Project from "./project";
 import {ProjectService} from "./project.service";
+import {ProjectFormEvent} from "../utils/project-form-event";
 
 @Component({
   templateUrl: "project-form.component.html",
   selector: "project-form"
 })
-export class ProjectFormComponent implements OnChanges{
+export class ProjectFormComponent implements OnInit{
   @Input() project: Project;
-  @Output() onChangeEditStatus: EventEmitter<boolean> = new EventEmitter<boolean>();
+  @Output() onChangeEditStatus: EventEmitter<ProjectFormEvent> = new EventEmitter<ProjectFormEvent>();
   projectCopy: Project;
 
   constructor(private projectService: ProjectService) {}
 
-  ngOnChanges(): void {
+  ngOnInit(): void {
     this.setProjectCopyToOriginal();
   }
 
   onClickCancel(): void {
-    this.onChangeEditStatus.emit(false);
+    if (this.project.id) {
+      this.onChangeEditStatus.emit(new ProjectFormEvent(this.project))
+    } else {
+      this.onChangeEditStatus.emit(new ProjectFormEvent());
+    }
   }
 
   onClickSubmit(): void {
-    this.projectService.addProject(this.projectCopy);
+    if (this.project.id) {
+      this.projectService.updateProject(this.projectCopy);
+    } else {
+      this.projectService.addProject(this.projectCopy);
+    }
   }
 
   showProjectHeading(): string {
@@ -36,10 +45,9 @@ export class ProjectFormComponent implements OnChanges{
     return "Untitled project";
   }
 
-
   private setProjectCopyToOriginal(): void {
     if (this.project) {
-      this.projectCopy = Object.assign(this.project) as Project;
+      this.projectCopy = JSON.parse(JSON.stringify(this.project));
     } else {
       this.projectCopy = new Project();
     }

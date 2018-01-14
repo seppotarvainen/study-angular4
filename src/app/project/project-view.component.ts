@@ -1,6 +1,7 @@
 import Project from "./project";
 import {ProjectService} from "./project.service";
-import {Component, Input} from "@angular/core";
+import {Component, Input, Output, EventEmitter} from "@angular/core";
+import {ProjectFormEvent} from "../utils/project-form-event";
 /**
  * Created by tarva on 15.11.2017.
  */
@@ -11,6 +12,7 @@ import {Component, Input} from "@angular/core";
 })
 export class ProjectViewComponent {
   @Input() project: Project;
+  @Output() onChangeEditStatus: EventEmitter<ProjectFormEvent> = new EventEmitter<ProjectFormEvent>();
 
   constructor(private projectService: ProjectService) {}
 
@@ -18,7 +20,7 @@ export class ProjectViewComponent {
     this.project.timeInSeconds = newTime;
 
     this.projectService.updateProject(this.project).then(response => {
-      this.project.timeInSeconds = response.timeInSeconds;
+      this.project = response;
     });
   }
 
@@ -32,6 +34,10 @@ export class ProjectViewComponent {
 
   onClickDelete(): void {
     this.projectService.deleteProject(this.project);
+  }
+
+  onClickEditProject(): void {
+    this.onChangeEditStatus.emit(new ProjectFormEvent(this.project, true));
   }
 
 }
