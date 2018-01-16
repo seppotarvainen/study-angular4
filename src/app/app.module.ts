@@ -10,6 +10,7 @@ import {TimerComponent} from "./timer/timer.component";
 import {FormsModule} from "@angular/forms";
 import {ProjectDetailsComponent} from "./project/project-details.component";
 import {ProjectViewComponent} from "./project/project-view.component";
+import {ChecklistViewComponent} from "./checklist/checklist-view.component";
 
 @NgModule({
   declarations: [
@@ -20,6 +21,7 @@ import {ProjectViewComponent} from "./project/project-view.component";
     ProjectDetailsComponent,
     MainComponent,
     TimerComponent,
+    ChecklistViewComponent
   ],
   imports: [
     BrowserModule,
