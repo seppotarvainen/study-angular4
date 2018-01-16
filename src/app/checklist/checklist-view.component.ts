@@ -42,4 +42,8 @@ export class ChecklistViewComponent {
     this.projectService.updateChecklistItem(itemToEdit, this.project);
   }
 
+  deleteDoneItems() {
+    this.projectService.deleteDoneChecklistItems(this.project);
+  }
+
 }

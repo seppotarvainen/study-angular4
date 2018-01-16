@@ -79,6 +79,17 @@ export class ProjectService {
       .catch(this.handleError);
   }
 
+  deleteDoneChecklistItems(project: Project): Promise<any> {
+    const url = `${this.projectsUrl}/${project.id}/checklist-items/`;
+    return this.http.delete(url)
+      .toPromise()
+      .then(() => {
+        project.checklist = project.checklist.filter(item => !item.done);
+        this._projectListEdit.next(project);
+      })
+      .catch(this.handleError);
+  }
+
   private handleError(error: any): Promise<any> {
     console.error("Error occurred!", error);
     return Promise.reject(error.message || error);
