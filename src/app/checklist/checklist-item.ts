@@ -5,8 +5,10 @@
 export class ChecklistItem {
   id: number;
   content: string;
+  done: boolean;
 
   constructor(content = "") {
     this.content = content;
+    this.done = false;
   }
 }
