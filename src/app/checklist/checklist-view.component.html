@@ -7,13 +7,14 @@
 </div>
 
 <ng-template #view>
-  <ul>
+  <ul class="checklist">
     <li *ngFor="let item of checklist">
-      {{item?.content}}
+      <input id="item-{{item.id}}" type="checkbox" [value]="item.done" [(ngModel)]="item.done" (click)="toggleItemDone(item)" />
+      <label for="item-{{item.id}}" [ngClass]="{done: item.done}">{{item.content}}</label>
     </li>
   </ul>
   <button class="btn btn-default" (click)="clickAddItem()">Add item</button>
-  <button class="btn btn-danger">Delete done items</button>
+  <button class="btn btn-danger" (click)="deleteDoneItems()">Delete done items</button>
 </ng-template>
 
 <ng-template #form>

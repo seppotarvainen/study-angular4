@@ -36,4 +36,14 @@ export class ChecklistViewComponent {
     this.isEditMode = false;
   }
 
+  toggleItemDone(item) {
+    const itemToEdit = JSON.parse(JSON.stringify(item));
+    itemToEdit.done = !itemToEdit.done;
+    this.projectService.updateChecklistItem(itemToEdit, this.project);
+  }
+
+  deleteDoneItems() {
+    this.projectService.deleteDoneChecklistItems(this.project);
+  }
+
 }
