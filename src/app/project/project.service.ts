@@ -67,6 +67,18 @@ export class ProjectService {
       .catch(this.handleError);
   }
 
+  updateChecklistItem(checklistItem: ChecklistItem, project: Project) : Promise<ChecklistItem> {
+    const url = `${this.projectsUrl}/${project.id}/checklist-items/${checklistItem.id}`;
+    return this.http.put(url, checklistItem)
+      .toPromise()
+      .then(item => {
+        let checklistItem = item.json() as ChecklistItem;
+        project.checklist = project.checklist.map(listItem => listItem.id === checklistItem.id ? checklistItem : listItem);
+        this._projectListEdit.next(project);
+      })
+      .catch(this.handleError);
+  }
+
   private handleError(error: any): Promise<any> {
     console.error("Error occurred!", error);
     return Promise.reject(error.message || error);
